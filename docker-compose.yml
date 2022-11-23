@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     networks:
       - my-network
-    restart: always
+    restart: unless-stopped
   client:
     build: client/
     command: python ./client.py
@@ -17,7 +17,12 @@ services:
       - my-network
     depends_on:
       - server
-    restart: always
+    restart: unless-stopped
 networks:
   my-network:
     driver: bridge
+
+#  “no”	Never attempt to restart a container even if it crashes or stops altogether
+#  always	If the container stops for any reasons whatsoever, always attempt to restart it
+#  on-failure	Only attempt to restart the container if it failed because of an error code
+#  unless-stopped	Always restart the container unless we (the developers) stop it explicitly.
